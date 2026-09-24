@@ -1,0 +1,312 @@
+[
+  {
+    "spotType": "その他",
+    "weather": "晴れ",
+    "id": "2026-07-18-mount-lake-camp",
+    "date": "2026-07-18",
+    "placeName": "マウントレイクキャンプ場",
+    "lat": 34.40702,
+    "lng": 134.832782,
+    "placeMemo": "兵庫県洲本市五色町鮎原中邑167(淡路島)。1泊2日(7/18〜19)。(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [
+      {
+        "creature": "トンボ",
+        "count": 1,
+        "note": "シオカラトンボ"
+      },
+      {
+        "creature": "カブトムシ",
+        "count": 1,
+        "note": ""
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "ショウリョウバッタ"
+      },
+      {
+        "creature": "セミ",
+        "count": 1,
+        "note": "ヒグラシ"
+      }
+    ],
+    "sightings": []
+  },
+  {
+    "spotType": "自然公園",
+    "weather": "晴れ",
+    "id": "2026-08-21-hitokura-koen",
+    "date": "2026-08-21",
+    "placeName": "一庫公園",
+    "lat": 34.915083,
+    "lng": 135.418667,
+    "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "ショウリョウバッタ"
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "トノサマバッタ"
+      }
+    ],
+    "sightings": [
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "ニホントカゲ"
+      },
+      {
+        "creature": "トンボ",
+        "count": 1,
+        "note": "オニヤンマ"
+      }
+    ]
+  },
+  {
+    "spotType": "その他",
+    "weather": "晴れ",
+    "id": "2026-08-22-kannoji",
+    "date": "2026-08-22",
+    "placeName": "神呪寺",
+    "lat": 34.773126,
+    "lng": 135.32976,
+    "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [
+      {
+        "creature": "その他の虫",
+        "count": 1,
+        "note": "タマムシ"
+      }
+    ],
+    "sightings": [
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "ニホントカゲ"
+      }
+    ]
+  },
+  {
+    "spotType": "公園",
+    "weather": "晴れ",
+    "id": "2026-08-23-wakamatsu-koen",
+    "date": "2026-08-23",
+    "placeName": "若松公園",
+    "lat": 34.7396722,
+    "lng": 135.4043085,
+    "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [],
+    "sightings": [
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "カナヘビ"
+      }
+    ],
+    "memo": "朝8時半に見かけた"
+  },
+  {
+    "spotType": "その他",
+    "weather": "晴れ",
+    "id": "2026-09-19-michinoeki-nose-kurinosato",
+    "date": "2026-09-19",
+    "placeName": "道の駅能勢(くりの郷)",
+    "lat": 34.956654,
+    "lng": 135.400999,
+    "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [],
+    "sightings": [
+      {
+        "creature": "トンボ",
+        "count": 1,
+        "note": "ハグロトンボ"
+      },
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "ニホントカゲ"
+      },
+      {
+        "creature": "カエル",
+        "count": 1,
+        "note": "トノサマガエル"
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "トノサマバッタ"
+      }
+    ]
+  },
+  {
+    "spotType": "その他",
+    "weather": "晴れ",
+    "id": "2026-09-19-yamamori-circuit",
+    "date": "2026-09-19",
+    "placeName": "やまもりサーキット",
+    "lat": 35.1688774,
+    "lng": 135.2786281,
+    "placeMemo": "(チャットから自動登録。緯度経度は住所地区レベルの概算なので要確認)",
+    "catches": [
+      {
+        "creature": "カエル",
+        "count": 1,
+        "note": "アマガエル"
+      },
+      {
+        "creature": "カエル",
+        "count": 1,
+        "note": "ヒキガエル"
+      },
+      {
+        "creature": "カマキリ",
+        "count": 1,
+        "note": "オオカマキリ"
+      },
+      {
+        "creature": "カマキリ",
+        "count": 1,
+        "note": "ハラビロカマキリ"
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "ショウリョウバッタ"
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "トノサマバッタ"
+      },
+      {
+        "creature": "その他の虫",
+        "count": 1,
+        "note": "ナナホシテントウ"
+      }
+    ],
+    "sightings": [
+      {
+        "creature": "水辺の生きもの",
+        "count": 1,
+        "note": "アカハライモリ"
+      },
+      {
+        "creature": "その他の虫",
+        "count": 1,
+        "note": "ホタル"
+      },
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "ニホントカゲ"
+      },
+      {
+        "creature": "その他",
+        "count": 1,
+        "note": "ムカデ"
+      },
+      {
+        "creature": "トンボ",
+        "count": 1,
+        "note": "ハグロトンボ"
+      }
+    ],
+    "memo": "9/19〜9/20(1泊)で訪問"
+  },
+  {
+    "spotType": "自然公園",
+    "weather": "晴れ",
+    "id": "2026-09-22-yashiro-no-mori-koen",
+    "date": "2026-09-22",
+    "placeName": "やしろの森公園",
+    "lat": 34.909056,
+    "lng": 135.03806,
+    "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "カナヘビ"
+      },
+      {
+        "creature": "トンボ",
+        "count": 1,
+        "note": "アキアカネ"
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "ショウリョウバッタ"
+      },
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "トノサマバッタ"
+      },
+      {
+        "creature": "カマキリ",
+        "count": 1,
+        "note": "オオカマキリ"
+      },
+      {
+        "creature": "水辺の生きもの",
+        "count": 1,
+        "note": "ドジョウ"
+      },
+      {
+        "creature": "水辺の生きもの",
+        "count": 1,
+        "note": "エビ"
+      }
+    ],
+    "memo": "",
+    "sightings": [
+      {
+        "creature": "水辺の生きもの",
+        "count": 1,
+        "note": "アメリカザリガニ"
+      },
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "ヘビ"
+      },
+      {
+        "creature": "爬虫類",
+        "count": 1,
+        "note": "ニホントカゲ"
+      }
+    ]
+  },
+  {
+    "spotType": "公園",
+    "weather": "晴れ",
+    "id": "2026-09-23-kamisakabe-nishi-koen",
+    "date": "2026-09-23",
+    "placeName": "上坂部西公園",
+    "lat": 34.74885,
+    "lng": 135.423184,
+    "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+    "catches": [
+      {
+        "creature": "バッタ",
+        "count": 1,
+        "note": "トノサマバッタ"
+      },
+      {
+        "creature": "チョウ・蛾",
+        "count": 1,
+        "note": "モンキチョウ"
+      },
+      {
+        "creature": "トンボ",
+        "count": 1,
+        "note": "シオカラトンボ"
+      }
+    ]
+  }
+]
