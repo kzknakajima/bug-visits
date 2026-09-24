@@ -1,0 +1,27 @@
+{
+  "spotType": "公園",
+  "weather": "晴れ",
+  "id": "2026-09-23-kamisakabe-nishi-koen",
+  "date": "2026-09-23",
+  "placeName": "上坂部西公園",
+  "lat": 34.74885,
+  "lng": 135.423184,
+  "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+  "catches": [
+    {
+      "creature": "バッタ",
+      "count": 1,
+      "note": "トノサマバッタ"
+    },
+    {
+      "creature": "チョウ・蛾",
+      "count": 1,
+      "note": "モンキチョウ"
+    },
+    {
+      "creature": "トンボ",
+      "count": 1,
+      "note": "シオカラトンボ"
+    }
+  ]
+}

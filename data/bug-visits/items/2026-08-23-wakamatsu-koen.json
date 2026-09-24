@@ -1,0 +1,19 @@
+{
+  "spotType": "公園",
+  "weather": "晴れ",
+  "id": "2026-08-23-wakamatsu-koen",
+  "date": "2026-08-23",
+  "placeName": "若松公園",
+  "lat": 34.7396722,
+  "lng": 135.4043085,
+  "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+  "catches": [],
+  "sightings": [
+    {
+      "creature": "爬虫類",
+      "count": 1,
+      "note": "カナヘビ"
+    }
+  ],
+  "memo": "朝8時半に見かけた"
+}

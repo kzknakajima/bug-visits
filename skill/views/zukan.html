@@ -1,0 +1,416 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, "Hiragino Sans", sans-serif;
+        background: #f8fafc;
+        color: #1e293b;
+      }
+      #root {
+        padding: 16px;
+      }
+      #header {
+        margin-bottom: 16px;
+      }
+      #header h1 {
+        font-size: 18px;
+        margin: 0 0 4px;
+      }
+      #header .stats {
+        font-size: 13px;
+        color: #64748b;
+      }
+      .category {
+        margin-bottom: 20px;
+      }
+      .category h2 {
+        font-size: 14px;
+        color: #334155;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 4px;
+        margin: 0 0 10px;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 10px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 12px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+      .card .emoji {
+        font-size: 26px;
+        line-height: 1;
+      }
+      .card .name {
+        font-weight: 700;
+        font-size: 14px;
+        margin: 4px 0 2px;
+      }
+      .card .category-label {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-bottom: 6px;
+      }
+      .badges {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+      }
+      .badge {
+        font-size: 11px;
+        border-radius: 4px;
+        padding: 2px 6px;
+        font-weight: 600;
+      }
+      .badge.caught {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .badge.seen {
+        background: #e0e7ff;
+        color: #3730a3;
+      }
+      .first-seen {
+        font-size: 11px;
+        color: #64748b;
+        margin-bottom: 6px;
+      }
+      .visit-dates {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .visit-date {
+        font-size: 10px;
+        color: #0369a1;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .err {
+        color: #b91c1c;
+        padding: 16px;
+      }
+      #status {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .card.mystery {
+        background: #f1f5f9;
+        border: 1.5px dashed #cbd5e1;
+      }
+      .card.mystery .emoji {
+        opacity: 0.45;
+        filter: grayscale(1);
+      }
+      .card.mystery .name {
+        color: #64748b;
+        letter-spacing: 1px;
+      }
+      .card.mystery .hint {
+        font-size: 11px;
+        color: #0ea5e9;
+        font-weight: 600;
+        margin-top: 2px;
+      }
+      .badge.unfound {
+        background: #e2e8f0;
+        color: #64748b;
+      }
+      .progress {
+        font-size: 12px;
+        color: #0369a1;
+        font-weight: 600;
+        margin-left: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">読み込み中…</div>
+    <script>
+      const FIELDS = "date,placeName,catches,sightings";
+      const CATEGORY_ORDER = ["セミ", "バッタ", "カマキリ", "カブトムシ", "クワガタ", "チョウ・蛾", "トンボ", "カエル", "爬虫類", "水辺の生きもの", "その他の虫", "その他"];
+      const CATEGORY_EMOJI = {
+        セミ: "🐛",
+        バッタ: "🦗",
+        カマキリ: "🦗",
+        カブトムシ: "🪲",
+        クワガタ: "🪲",
+        "チョウ・蛾": "🦋",
+        トンボ: "🐛",
+        カエル: "🐸",
+        爬虫類: "🦎",
+        "水辺の生きもの": "🦐",
+        "その他の虫": "🐞",
+        その他: "❓",
+      };
+      // 「有名な生き物」マスターリスト。まだ記録していない種類は
+      // 穴埋め(◯◯)カード + 特徴ヒントで表示し、今後の発見意欲を高める。
+      const MASTER_SPECIES = {
+        セミ: [
+          { name: "アブラゼミ", hint: "羽が透明でなく茶色っぽい。「ジリジリジリ」と鳴く" },
+          { name: "ミンミンゼミ", hint: "「ミーンミーン」と鳴く、ザ・セミという見た目" },
+          { name: "クマゼミ", hint: "西日本に多い大型セミ。「シャンシャンシャン」と鳴く" },
+          { name: "ツクツクボウシ", hint: "夏の終わりによく鳴く。「ツクツクボーシ」と聞こえる" },
+          { name: "ヒグラシ", hint: "朝夕に「カナカナカナ」と鳴く、少し小さめのセミ" },
+          { name: "ニイニイゼミ", hint: "梅雨明け前から鳴き始める、小さくて地味なセミ" },
+        ],
+        バッタ: [
+          { name: "トノサマバッタ", hint: "大きくてジャンプ力抜群。緑色や茶色の体" },
+          { name: "ショウリョウバッタ", hint: "細長い体。オスは飛ぶとキチキチ音を立てる" },
+          { name: "オンブバッタ", hint: "小さいオスが大きいメスの背中に乗っていることが多い" },
+          { name: "クルマバッタ", hint: "飛ぶと後ろ羽の模様が目立つ、草むらの中型バッタ" },
+          { name: "イナゴ", hint: "田んぼによくいる、稲を食べる緑色のバッタ" },
+        ],
+        カマキリ: [
+          { name: "オオカマキリ", hint: "大きくて緑色、日本最大級のカマキリ" },
+          { name: "ハラビロカマキリ", hint: "お腹が幅広く、木の上によくいる" },
+          { name: "コカマキリ", hint: "小型で地味な色、鎌の内側に模様がある" },
+          { name: "チョウセンカマキリ", hint: "オオカマキリに似るが、やや細身" },
+        ],
+        カブトムシ: [{ name: "カブトムシ", hint: "オスは大きなツノが1本、夜に樹液に集まる" }],
+        クワガタ: [
+          { name: "ノコギリクワガタ", hint: "オスの大アゴが弓なりに大きく曲がる" },
+          { name: "コクワガタ", hint: "身近な林でよく見つかる、小さめのクワガタ" },
+          { name: "ミヤマクワガタ", hint: "頭の左右が耳のように張り出している" },
+          { name: "ヒラタクワガタ", hint: "体が平べったく、樹皮の隙間に隠れるのが得意" },
+          { name: "オオクワガタ", hint: "希少で人気、大きなアゴを持つ憧れのクワガタ" },
+        ],
+        "チョウ・蛾": [
+          { name: "アゲハチョウ", hint: "黒と黄色の大きなチョウ、後ろ羽に尾状突起" },
+          { name: "モンシロチョウ", hint: "白い羽に黒い点、畑でよく見る" },
+          { name: "モンキチョウ", hint: "黄色い羽が特徴、モンシロチョウに似た飛び方" },
+          { name: "アオスジアゲハ", hint: "黒い羽に青緑のラインが入った美しいチョウ" },
+          { name: "キアゲハ", hint: "アゲハチョウに似るが、羽の付け根が黄色っぽい" },
+          { name: "ツマグロヒョウモン", hint: "オレンジ色でヒョウ柄、メスは羽先が黒い" },
+        ],
+        トンボ: [
+          { name: "シオカラトンボ", hint: "オスは白っぽい粉をふいた青灰色" },
+          { name: "オニヤンマ", hint: "日本最大のトンボ、黒と黄色のしま模様" },
+          { name: "ギンヤンマ", hint: "池の上を高速で飛ぶ、緑と青のトンボ" },
+          { name: "アキアカネ", hint: "秋に群れで飛ぶ、赤とんぼの代表" },
+          { name: "ハグロトンボ", hint: "黒い羽をひらひらさせて飛ぶ、優雅なトンボ" },
+          { name: "ウスバキトンボ", hint: "夏にたくさん群れで飛ぶ、薄い羽のトンボ" },
+        ],
+        カエル: [
+          { name: "アマガエル", hint: "緑色で体が小さい、家の近くでもよく見る" },
+          { name: "トノサマガエル", hint: "背中に黒い斑点、田んぼの定番" },
+          { name: "ヒキガエル", hint: "体がゴツゴツして大きい、のそのそ歩く" },
+          { name: "ツチガエル", hint: "イボイボの肌で、水辺の石の下にいる" },
+          { name: "ウシガエル", hint: "とても大きく「ブオー」と鳴く外来種" },
+        ],
+        爬虫類: [
+          { name: "カナヘビ", hint: "茶色でしっぽが長いトカゲの仲間" },
+          { name: "ニホントカゲ", hint: "子どもは尻尾が青く光る" },
+          { name: "ヤモリ", hint: "「家を守る」意味の名前、壁にはりつく" },
+          { name: "アオダイショウ", hint: "日本でよく見る大きな青みがかったヘビ" },
+          { name: "クサガメ", hint: "甲羅に3本の筋、池や川にいる定番のカメ" },
+        ],
+        "水辺の生きもの": [
+          { name: "ザリガニ", hint: "はさみを持つ、田んぼや用水路の人気者" },
+          { name: "サワガニ", hint: "きれいな小川にいる小さな赤茶色のカニ" },
+          { name: "メダカ", hint: "小川や田んぼを群れで泳ぐ小さな魚" },
+        ],
+        "その他の虫": [
+          { name: "ホタル", hint: "夏の夜にお尻を光らせて飛ぶ" },
+          { name: "ダンゴムシ", hint: "触るとまるくなる、石の下の人気者" },
+          { name: "テントウムシ", hint: "背中に水玉模様、赤や黄色の丸い虫" },
+          { name: "カタツムリ", hint: "殻を背負ってゆっくり進む、雨の日に活発" },
+        ],
+        その他: [],
+      };
+      function maskName(name) {
+        // 文字数はそのまま見せつつ、最初と最後の文字は残し、
+        // 途中の1〜2文字だけを◯にして当てやすくする(例: アブラゼミ → ア◯ラゼミ)
+        const chars = [...name];
+        const n = chars.length;
+        if (n <= 1) return "◯".repeat(n);
+        if (n === 2) return chars[0] + "◯";
+        const interior = n - 2; // 先頭・末尾を除いた文字数
+        const maskCount = interior <= 3 ? 1 : 2;
+        const positions = maskCount === 1 ? [1] : [1, n - 2];
+        return chars.map((c, i) => (positions.includes(i) ? "◯" : c)).join("");
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      }
+
+      async function load() {
+        const { token, dataUrl } = window.__MC_VIEW;
+        const url = dataUrl + "?fields=" + encodeURIComponent(FIELDS);
+        const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+        if (!res.ok) throw new Error("HTTP " + res.status + ": " + (await res.text()));
+        const { items } = await res.json();
+        return items;
+      }
+
+      function aggregate(items) {
+        const map = new Map();
+        for (const it of items) {
+          const rows = [
+            ...(it.catches || []).map((r) => ({ ...r, kind: "caught" })),
+            ...(it.sightings || []).map((r) => ({ ...r, kind: "seen" })),
+          ];
+          for (const r of rows) {
+            if (!r.creature) continue;
+            const name = (r.note && r.note.trim()) || r.creature;
+            const key = r.creature + "|" + name;
+            if (!map.has(key)) {
+              map.set(key, {
+                category: r.creature,
+                name,
+                firstDate: it.date,
+                firstPlace: it.placeName,
+                caughtTotal: 0,
+                seenTotal: 0,
+                visits: new Map(),
+              });
+            }
+            const e = map.get(key);
+            const cnt = Number(r.count) || 1;
+            if (r.kind === "caught") e.caughtTotal += cnt;
+            else e.seenTotal += cnt;
+            e.visits.set(it.id, it.date);
+            if (it.date && (!e.firstDate || it.date < e.firstDate)) {
+              e.firstDate = it.date;
+              e.firstPlace = it.placeName;
+            }
+          }
+        }
+        return [...map.values()];
+      }
+
+      function render(items) {
+        const entries = aggregate(items);
+        const root = document.getElementById("root");
+
+        const byCategory = new Map();
+        for (const e of entries) {
+          if (!byCategory.has(e.category)) byCategory.set(e.category, []);
+          byCategory.get(e.category).push(e);
+        }
+        const allCategories = new Set([...byCategory.keys(), ...Object.keys(MASTER_SPECIES)]);
+        const categories = [...allCategories].sort((a, b) => {
+          const ai = CATEGORY_ORDER.indexOf(a);
+          const bi = CATEGORY_ORDER.indexOf(b);
+          return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+        });
+
+        const caughtSpecies = entries.filter((e) => e.caughtTotal > 0).length;
+        const seenOnlySpecies = entries.filter((e) => e.caughtTotal === 0 && e.seenTotal > 0).length;
+
+        // マスターリストのうち何種を発見済みか(全体コンプリート率)
+        let masterTotal = 0;
+        let masterFound = 0;
+        for (const cat of Object.keys(MASTER_SPECIES)) {
+          const found = new Set((byCategory.get(cat) || []).map((e) => e.name.trim()));
+          for (const sp of MASTER_SPECIES[cat]) {
+            masterTotal++;
+            if (found.has(sp.name)) masterFound++;
+          }
+        }
+
+        let html =
+          '<div id="header"><h1>🔎 むしとり図鑑</h1><div class="stats">全 ' +
+          entries.length +
+          " 種類発見(捕まえた: " +
+          caughtSpecies +
+          " 種 / 見ただけ: " +
+          seenOnlySpecies +
+          " 種)<span class=\"progress\">有名な生き物コンプリート: " +
+          masterFound +
+          " / " +
+          masterTotal +
+          " 種</span></div></div>";
+
+        if (!entries.length) {
+          html += '<div id="status">まだ記録がありません。むしとりに行ったら記録してみましょう!</div>';
+        }
+
+        for (const cat of categories) {
+          const list = (byCategory.get(cat) || []).slice().sort((a, b) => (a.firstDate < b.firstDate ? -1 : 1));
+          const found = new Set(list.map((e) => e.name.trim()));
+          const missing = (MASTER_SPECIES[cat] || []).filter((sp) => !found.has(sp.name));
+          const totalKnown = list.length + missing.length;
+          if (!totalKnown) continue;
+
+          html +=
+            '<div class="category"><h2>' +
+            (CATEGORY_EMOJI[cat] || "🐛") +
+            " " +
+            escapeHtml(cat) +
+            "(" +
+            list.length +
+            "/" +
+            totalKnown +
+            "種)</h2>";
+          html += '<div class="cards">';
+          for (const e of list) {
+            const badges = [];
+            if (e.caughtTotal > 0) badges.push('<span class="badge caught">捕まえた ×' + e.caughtTotal + "</span>");
+            if (e.seenTotal > 0) badges.push('<span class="badge seen">見ただけ ×' + e.seenTotal + "</span>");
+            const dateChips = [...e.visits.entries()]
+              .sort((a, b) => (a[1] < b[1] ? 1 : -1))
+              .map(([id, date]) => '<span class="visit-date" data-id="' + escapeHtml(id) + '">' + escapeHtml(date) + "</span>")
+              .join("");
+            html +=
+              '<div class="card">' +
+              '<div class="emoji">' + (CATEGORY_EMOJI[e.category] || "🐛") + "</div>" +
+              '<div class="name">' + escapeHtml(e.name) + "</div>" +
+              '<div class="category-label">' + escapeHtml(e.category) + "</div>" +
+              '<div class="badges">' + badges.join("") + "</div>" +
+              '<div class="first-seen">初めて: ' + escapeHtml(e.firstDate || "") + " @ " + escapeHtml(e.firstPlace || "") + "</div>" +
+              '<div class="visit-dates">' + dateChips + "</div>" +
+              "</div>";
+          }
+          for (const sp of missing) {
+            html +=
+              '<div class="card mystery">' +
+              '<div class="emoji">❔</div>' +
+              '<div class="name">' + maskName(sp.name) + "</div>" +
+              '<div class="category-label">' + escapeHtml(cat) + "</div>" +
+              '<div class="badges"><span class="badge unfound">未発見</span></div>' +
+              '<div class="hint">' + escapeHtml(sp.hint) + "</div>" +
+              "</div>";
+          }
+          html += "</div></div>";
+        }
+        root.innerHTML = html;
+        root.querySelectorAll(".visit-date").forEach((el) => {
+          el.onclick = () => window.__MC_VIEW.openItem(el.dataset.id);
+        });
+      }
+
+      async function main() {
+        const items = await load();
+        render(items);
+      }
+
+      main().catch((e) => {
+        document.getElementById("root").innerHTML = '<div class="err">読み込みに失敗しました: ' + (e && e.message ? e.message : e) + "</div>";
+      });
+
+      window.__MC_VIEW.onChange(async () => {
+        try {
+          const items = await load();
+          render(items);
+        } catch (e) {
+          // keep last good render on transient errors
+        }
+      });
+    </script>
+  </body>
+</html>

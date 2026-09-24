@@ -1,0 +1,24 @@
+{
+  "spotType": "その他",
+  "weather": "晴れ",
+  "id": "2026-08-22-kannoji",
+  "date": "2026-08-22",
+  "placeName": "神呪寺",
+  "lat": 34.773126,
+  "lng": 135.32976,
+  "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+  "catches": [
+    {
+      "creature": "その他の虫",
+      "count": 1,
+      "note": "タマムシ"
+    }
+  ],
+  "sightings": [
+    {
+      "creature": "爬虫類",
+      "count": 1,
+      "note": "ニホントカゲ"
+    }
+  ]
+}

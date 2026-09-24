@@ -1,0 +1,154 @@
+{
+  "title": "むしとり記録",
+  "color": "lime",
+  "icon": "bug_report",
+  "dataPath": "data/bug-visits/items",
+  "primaryKey": "id",
+  "fields": {
+    "id": {
+      "type": "string",
+      "label": "ID",
+      "primary": true
+    },
+    "date": {
+      "type": "date",
+      "label": "日付",
+      "required": true
+    },
+    "placeName": {
+      "type": "string",
+      "label": "場所の名前",
+      "required": true
+    },
+    "spotType": {
+      "type": "enum",
+      "label": "場所の種類",
+      "values": [
+        "神社",
+        "自然公園",
+        "公園",
+        "その他"
+      ],
+      "default": "自然公園"
+    },
+    "lat": {
+      "type": "number",
+      "label": "緯度 (lat)",
+      "required": true
+    },
+    "lng": {
+      "type": "number",
+      "label": "経度 (lng)",
+      "required": true
+    },
+    "placeMemo": {
+      "type": "text",
+      "label": "場所のメモ(アクセス等)"
+    },
+    "weather": {
+      "type": "enum",
+      "label": "天気",
+      "values": [
+        "晴れ",
+        "くもり",
+        "雨",
+        "雪",
+        "不明"
+      ],
+      "default": "晴れ"
+    },
+    "catches": {
+      "type": "table",
+      "label": "捕まえた生き物",
+      "of": {
+        "creature": {
+          "type": "enum",
+          "label": "生き物",
+          "values": [
+            "セミ",
+            "バッタ",
+            "カマキリ",
+            "カブトムシ",
+            "クワガタ",
+            "チョウ・蛾",
+            "トンボ",
+            "カエル",
+            "爬虫類",
+            "水辺の生きもの",
+            "その他の虫",
+            "その他"
+          ]
+        },
+        "count": {
+          "type": "number",
+          "label": "匹数"
+        },
+        "note": {
+          "type": "string",
+          "label": "メモ"
+        }
+      }
+    },
+    "sightings": {
+      "type": "table",
+      "label": "見た生き物(捕まえなかった)",
+      "of": {
+        "creature": {
+          "type": "enum",
+          "label": "生き物",
+          "values": [
+            "セミ",
+            "バッタ",
+            "カマキリ",
+            "カブトムシ",
+            "クワガタ",
+            "チョウ・蛾",
+            "トンボ",
+            "カエル",
+            "爬虫類",
+            "水辺の生きもの",
+            "その他の虫",
+            "その他"
+          ]
+        },
+        "count": {
+          "type": "number",
+          "label": "匹数"
+        },
+        "note": {
+          "type": "string",
+          "label": "メモ"
+        }
+      }
+    },
+    "photo": {
+      "type": "image",
+      "label": "写真"
+    },
+    "memo": {
+      "type": "text",
+      "label": "感想・メモ"
+    }
+  },
+  "calendarField": "date",
+  "views": [
+    {
+      "id": "map",
+      "label": "地図",
+      "icon": "map",
+      "file": "views/map.html",
+      "capabilities": [
+        "read"
+      ]
+    },
+    {
+      "id": "zukan",
+      "label": "図鑑",
+      "icon": "auto_awesome",
+      "file": "views/zukan.html",
+      "capabilities": [
+        "read"
+      ]
+    }
+  ]
+}

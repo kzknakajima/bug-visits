@@ -1,0 +1,33 @@
+{
+  "spotType": "その他",
+  "weather": "晴れ",
+  "id": "2026-09-19-michinoeki-nose-kurinosato",
+  "date": "2026-09-19",
+  "placeName": "道の駅能勢(くりの郷)",
+  "lat": 34.956654,
+  "lng": 135.400999,
+  "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+  "catches": [],
+  "sightings": [
+    {
+      "creature": "トンボ",
+      "count": 1,
+      "note": "ハグロトンボ"
+    },
+    {
+      "creature": "爬虫類",
+      "count": 1,
+      "note": "ニホントカゲ"
+    },
+    {
+      "creature": "カエル",
+      "count": 1,
+      "note": "トノサマガエル"
+    },
+    {
+      "creature": "バッタ",
+      "count": 1,
+      "note": "トノサマバッタ"
+    }
+  ]
+}

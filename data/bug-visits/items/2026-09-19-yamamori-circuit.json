@@ -1,0 +1,75 @@
+{
+  "spotType": "その他",
+  "weather": "晴れ",
+  "id": "2026-09-19-yamamori-circuit",
+  "date": "2026-09-19",
+  "placeName": "やまもりサーキット",
+  "lat": 35.1688774,
+  "lng": 135.2786281,
+  "placeMemo": "(チャットから自動登録。緯度経度は住所地区レベルの概算なので要確認)",
+  "catches": [
+    {
+      "creature": "カエル",
+      "count": 1,
+      "note": "アマガエル"
+    },
+    {
+      "creature": "カエル",
+      "count": 1,
+      "note": "ヒキガエル"
+    },
+    {
+      "creature": "カマキリ",
+      "count": 1,
+      "note": "オオカマキリ"
+    },
+    {
+      "creature": "カマキリ",
+      "count": 1,
+      "note": "ハラビロカマキリ"
+    },
+    {
+      "creature": "バッタ",
+      "count": 1,
+      "note": "ショウリョウバッタ"
+    },
+    {
+      "creature": "バッタ",
+      "count": 1,
+      "note": "トノサマバッタ"
+    },
+    {
+      "creature": "その他の虫",
+      "count": 1,
+      "note": "ナナホシテントウ"
+    }
+  ],
+  "sightings": [
+    {
+      "creature": "水辺の生きもの",
+      "count": 1,
+      "note": "アカハライモリ"
+    },
+    {
+      "creature": "その他の虫",
+      "count": 1,
+      "note": "ホタル"
+    },
+    {
+      "creature": "爬虫類",
+      "count": 1,
+      "note": "ニホントカゲ"
+    },
+    {
+      "creature": "その他",
+      "count": 1,
+      "note": "ムカデ"
+    },
+    {
+      "creature": "トンボ",
+      "count": 1,
+      "note": "ハグロトンボ"
+    }
+  ],
+  "memo": "9/19〜9/20(1泊)で訪問"
+}

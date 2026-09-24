@@ -1,0 +1,34 @@
+{
+  "spotType": "自然公園",
+  "weather": "晴れ",
+  "id": "2026-08-21-hitokura-koen",
+  "date": "2026-08-21",
+  "placeName": "一庫公園",
+  "lat": 34.915083,
+  "lng": 135.418667,
+  "placeMemo": "(チャットから自動登録。緯度経度は自動取得のため要確認)",
+  "catches": [
+    {
+      "creature": "バッタ",
+      "count": 1,
+      "note": "ショウリョウバッタ"
+    },
+    {
+      "creature": "バッタ",
+      "count": 1,
+      "note": "トノサマバッタ"
+    }
+  ],
+  "sightings": [
+    {
+      "creature": "爬虫類",
+      "count": 1,
+      "note": "ニホントカゲ"
+    },
+    {
+      "creature": "トンボ",
+      "count": 1,
+      "note": "オニヤンマ"
+    }
+  ]
+}
