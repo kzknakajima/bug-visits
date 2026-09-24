@@ -1,0 +1,54 @@
+{
+  "spotType": "その他",
+  "weather": "晴れ",
+  "id": "2026-08-30-amagasaki-nogyo-koen",
+  "date": "2026-08-30",
+  "placeName": "尼崎市農業公園",
+  "lat": 34.769581,
+  "lng": 135.433047,
+  "placeMemo": "兵庫県尼崎市田能5丁目12-1。(チャットから自動登録。緯度経度は自動取得のため要確認)",
+  "catches": [
+    {
+      "creature": "トンボ",
+      "count": 1,
+      "note": "ヤゴ"
+    },
+    {
+      "creature": "カエル",
+      "count": 1,
+      "note": "オタマジャクシ"
+    },
+    {
+      "creature": "カエル",
+      "count": 1,
+      "note": "ヌマガエル"
+    },
+    {
+      "creature": "水辺の生きもの",
+      "count": 1,
+      "note": "エビ"
+    },
+    {
+      "creature": "その他の虫",
+      "count": 1,
+      "note": "ゲンゴロウ"
+    }
+  ],
+  "sightings": [
+    {
+      "creature": "水辺の生きもの",
+      "count": 1,
+      "note": "アメリカザリガニ"
+    },
+    {
+      "creature": "水辺の生きもの",
+      "count": 1,
+      "note": "ドジョウ"
+    },
+    {
+      "creature": "トンボ",
+      "count": 1,
+      "note": "ハグロトンボ"
+    }
+  ]
+}
