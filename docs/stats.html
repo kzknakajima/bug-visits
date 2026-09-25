@@ -1,0 +1,356 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>むしとり統計</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --sat: env(safe-area-inset-top, 0px);
+        --sab: env(safe-area-inset-bottom, 0px);
+        --sal: env(safe-area-inset-left, 0px);
+        --sar: env(safe-area-inset-right, 0px);
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, system-ui, "Hiragino Sans", sans-serif;
+        background: #f1f5f9;
+        color: #0f172a;
+        overscroll-behavior-y: contain;
+      }
+      #topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: linear-gradient(180deg, #0f172a, #1e293b);
+        color: #fff;
+        padding: calc(14px + var(--sat)) calc(18px + var(--sar)) 16px calc(18px + var(--sal));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      #topbar h1 {
+        font-size: 19px;
+        margin: 0 0 2px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      #topbar .stats {
+        font-size: 13px;
+        color: #cbd5e1;
+      }
+      #back {
+        flex: none;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+      }
+      #root {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 14px calc(14px + var(--sar)) calc(28px + var(--sab)) calc(14px + var(--sal));
+      }
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 0.02em;
+        margin: 4px 4px 8px;
+        text-transform: uppercase;
+      }
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+      .stat-tile {
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      }
+      .stat-tile.wide {
+        grid-column: 1 / -1;
+      }
+      .stat-tile .value {
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.25;
+        margin-bottom: 2px;
+        word-break: break-word;
+      }
+      .stat-tile.wide .value {
+        font-size: 17px;
+      }
+      .stat-tile .sub {
+        font-size: 12.5px;
+        color: #64748b;
+        font-weight: 600;
+      }
+      .stat-tile .label {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .trend-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .trend-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px 14px 8px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      }
+      .trend-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .trend-title {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .trend-total {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 600;
+      }
+      .trend-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        height: 48px;
+        background: linear-gradient(to top, #f1f5f9 1px, transparent 1px) 0 100%/100% 1px no-repeat;
+      }
+      .trend-bars .bar {
+        flex: 1;
+        min-width: 0;
+        background: #2563eb;
+        border-radius: 3px 3px 0 0;
+      }
+      .trend-ticks {
+        display: flex;
+        gap: 2px;
+        margin-top: 3px;
+      }
+      .trend-ticks span {
+        flex: 1;
+        text-align: center;
+        font-size: 9px;
+        color: #94a3b8;
+      }
+      .empty-note {
+        font-size: 12px;
+        color: #94a3b8;
+        padding: 4px;
+      }
+      .err {
+        color: #b91c1c;
+        padding: 16px;
+        font-size: 14px;
+      }
+      .loading {
+        padding: 24px 4px;
+        color: #64748b;
+        font-size: 14px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="topbar">
+      <div>
+        <h1>📊 統計</h1>
+        <div class="stats" id="stats">読み込み中…</div>
+      </div>
+      <a id="back" href="./index.html">一覧に戻る</a>
+    </div>
+    <div id="root">
+      <div class="section-label">サマリー</div>
+      <div class="stat-grid" id="statGrid">
+        <div class="loading">読み込み中…</div>
+      </div>
+      <div class="section-label">季節トレンド(月別の記録数)</div>
+      <div class="trend-list" id="trendList"></div>
+    </div>
+    <script src="./detail.js"></script>
+    <script>
+      // Fixed creature category order, matching the bug-visits collection's
+      // `creature` enum. Kept as one const so trend facets always render in
+      // the same, meaningful order (most-recognizable categories first).
+      const CREATURE_ORDER = [
+        "セミ", "バッタ", "カマキリ", "カブトムシ", "クワガタ", "チョウ・蛾",
+        "トンボ", "カエル", "爬虫類", "水辺の生きもの", "その他の虫", "その他",
+      ];
+      const MONTH_LABELS = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      }
+
+      // Same place-grouping key as map.html, so "most-visited place" agrees
+      // with what the map tab shows as one pin.
+      function placeKey(it) {
+        const lat = Number(it.lat);
+        const lng = Number(it.lng);
+        const coords = Number.isFinite(lat) && Number.isFinite(lng) ? lat.toFixed(5) + "|" + lng.toFixed(5) : "";
+        return (it.placeName || "") + "|" + coords;
+      }
+
+      function tileHtml(value, label, sub, wide) {
+        return (
+          '<div class="stat-tile' + (wide ? " wide" : "") + '">' +
+          '<div class="value">' + value + "</div>" +
+          (sub ? '<div class="sub">' + sub + "</div>" : "") +
+          '<div class="label">' + label + "</div>" +
+          "</div>"
+        );
+      }
+
+      function renderStats(items) {
+        const now = new Date();
+        const thisYear = String(now.getFullYear());
+        const thisMonth = thisYear + "-" + String(now.getMonth() + 1).padStart(2, "0");
+
+        let yearCount = 0;
+        let monthCount = 0;
+        let catchesTotal = 0;
+        let sightingsTotal = 0;
+        const placeCounts = new Map(); // key -> { name, count }
+        const creatureCounts = new Map(); // "creature||note" -> { creature, note, count }
+
+        for (const it of items) {
+          const d = it.date || "";
+          if (d.slice(0, 4) === thisYear) yearCount++;
+          if (d.slice(0, 7) === thisMonth) monthCount++;
+
+          const pk = placeKey(it);
+          if (!placeCounts.has(pk)) placeCounts.set(pk, { name: it.placeName || "(不明)", count: 0 });
+          placeCounts.get(pk).count++;
+
+          for (const row of it.catches || []) {
+            catchesTotal += Number(row.count) || 1;
+            const ck = (row.creature || "") + "||" + (row.note || "");
+            if (!creatureCounts.has(ck)) creatureCounts.set(ck, { creature: row.creature, note: row.note, count: 0 });
+            creatureCounts.get(ck).count += Number(row.count) || 1;
+          }
+          for (const row of it.sightings || []) {
+            sightingsTotal += Number(row.count) || 1;
+            const ck = (row.creature || "") + "||" + (row.note || "");
+            if (!creatureCounts.has(ck)) creatureCounts.set(ck, { creature: row.creature, note: row.note, count: 0 });
+            creatureCounts.get(ck).count += Number(row.count) || 1;
+          }
+        }
+
+        let topPlace = null;
+        for (const p of placeCounts.values()) {
+          if (!topPlace || p.count > topPlace.count) topPlace = p;
+        }
+        let topCreature = null;
+        for (const c of creatureCounts.values()) {
+          if (!topCreature || c.count > topCreature.count) topCreature = c;
+        }
+
+        const grid = document.getElementById("statGrid");
+        grid.innerHTML =
+          tileHtml(items.length + " 回", "累計お出かけ回数") +
+          tileHtml(creatureCounts.size + " 種類", "記録した生き物の種類数") +
+          tileHtml(yearCount + " 回", "今年のお出かけ回数") +
+          tileHtml(monthCount + " 回", "今月のお出かけ回数") +
+          tileHtml(catchesTotal + " 匹", "捕まえた数(合計)") +
+          tileHtml(sightingsTotal + " 匹", "見ただけの数(合計)") +
+          (topPlace
+            ? tileHtml(escapeHtml(topPlace.name), "一番よく行く場所", topPlace.count + " 回訪問", true)
+            : "") +
+          (topCreature
+            ? tileHtml(
+                escapeHtml(topCreature.note || topCreature.creature || "-"),
+                "一番よく記録する生き物",
+                topCreature.count + " 匹(捕獲+目撃)",
+                true
+              )
+            : "");
+      }
+
+      function renderTrends(items) {
+        // monthly[creature][0..11] = total count (catches + sightings),
+        // aggregated across all years, to surface *seasonal* patterns
+        // rather than a single year's timeline.
+        const monthly = new Map(CREATURE_ORDER.map((c) => [c, new Array(12).fill(0)]));
+
+        for (const it of items) {
+          const m = /^\d{4}-(\d{2})/.exec(it.date || "");
+          if (!m) continue;
+          const monthIdx = Number(m[1]) - 1;
+          if (monthIdx < 0 || monthIdx > 11) continue;
+          for (const row of (it.catches || []).concat(it.sightings || [])) {
+            const arr = monthly.get(row.creature);
+            if (!arr) continue; // unknown/legacy creature value, skip
+            arr[monthIdx] += Number(row.count) || 1;
+          }
+        }
+
+        const facets = CREATURE_ORDER.map((creature) => {
+          const arr = monthly.get(creature);
+          const total = arr.reduce((a, b) => a + b, 0);
+          return { creature, arr, total };
+        })
+          .filter((f) => f.total > 0)
+          .sort((a, b) => b.total - a.total);
+
+        const list = document.getElementById("trendList");
+        if (!facets.length) {
+          list.innerHTML = '<div class="empty-note">まだ記録がありません</div>';
+          return;
+        }
+
+        list.innerHTML = facets
+          .map((f) => {
+            const max = Math.max(...f.arr) || 1;
+            const bars = f.arr.map((v) => '<div class="bar" style="height:' + Math.max(v ? (v / max) * 100 : 0, 0) + '%"></div>').join("");
+            const ticks = MONTH_LABELS.map((label, i) => "<span>" + (i % 3 === 0 ? label : "") + "</span>").join("");
+            return (
+              '<div class="trend-card">' +
+              '<div class="trend-head"><span class="trend-title">' + escapeHtml(f.creature) + "</span>" +
+              '<span class="trend-total">' + f.total + " 匹</span></div>" +
+              '<div class="trend-bars">' + bars + "</div>" +
+              '<div class="trend-ticks">' + ticks + "</div>" +
+              "</div>"
+            );
+          })
+          .join("");
+      }
+
+      async function main() {
+        const items = await window.loadBugVisits();
+        document.getElementById("stats").textContent = items.length + " 回のお出かけを記録中";
+        renderStats(items);
+        renderTrends(items);
+      }
+
+      main().catch((e) => {
+        document.getElementById("statGrid").innerHTML = '<div class="err">読み込みに失敗しました: ' + (e && e.message ? e.message : e) + "</div>";
+      });
+    </script>
+  </body>
+</html>
